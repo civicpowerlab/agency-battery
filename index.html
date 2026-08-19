@@ -135,8 +135,8 @@
 <div class="shell">
 
 <header class="top">
-  <span class="wordmark">DPI Fund &middot; Civic Power Lab <span>/ Agency research</span></span>
-  <span class="badge">Research battery &middot; draft v0.1.1</span>
+  <span class="wordmark">Miriam McKinney Gray <span>&middot; DPI Fund &middot; Civic Power Lab</span></span>
+  <span class="badge">Research battery &middot; draft v0.1.2</span>
 </header>
 
 <div class="progress-wrap" id="progress-wrap" style="display:none">
@@ -147,7 +147,7 @@
 <div id="stage"></div>
 
 <footer>
-  <span>Agency research battery &middot; DPI Fund &middot; Civic Power Lab</span>
+  <span>Developed by Miriam McKinney Gray &middot; <a href="mailto:mnm2144@columbia.edu" style="color:var(--accent-deep)">mnm2144@columbia.edu</a> &middot; DPI Fund &middot; Civic Power Lab</span>
   <span>Demo only &mdash; validation in progress</span>
 </footer>
 </div>
@@ -388,9 +388,10 @@ function navButtons(backTo, nextLabel, nextEnabled) {
 
 function renderCover() {
   stage.innerHTML = `
-    <div class="kicker">DPI Fund &middot; Civic Power Lab &middot; Agency Research</div>
+    <div class="kicker">Agency Research</div>
     <h1>Your Civic Life: A Research Survey</h1>
     <p class="lede">A short research survey about how people experience power and agency in their organizing. Your answers help us understand how leaders and communities build the capacity to act together.</p>
+    <p class="sec-desc" style="margin-bottom:14px">Developed by <b>Miriam McKinney Gray</b> (<a href="mailto:mnm2144@columbia.edu" style="color:var(--accent-deep)">mnm2144@columbia.edu</a>) with the DPI Fund and Civic Power Lab.</p>
     <div class="meta-chips">
       <span class="chip">About 15 minutes</span>
       <span class="chip">Voluntary</span>
@@ -544,7 +545,8 @@ function renderAbout() {
       <input id="d-race-self" placeholder="Self-describe" value="${d.raceSelf || ""}" style="display:${(d.race || []).includes("self") ? "" : "none"}; margin-top:8px">
     </div>
     <div class="field"><label>Gender</label><select id="d-gender"><option value=""></option>${GENDER_OPTIONS.map(g =>
-      `<option ${d.gender === g ? "selected" : ""}>${g}</option>`).join("")}</select></div>
+      `<option ${d.gender === g ? "selected" : ""}>${g}</option>`).join("")}</select>
+      <input id="d-gender-self" placeholder="Self-describe" value="${d.genderSelf || ""}" style="display:${d.gender === "Prefer to self-describe" ? "" : "none"}; margin-top:8px"></div>
     <div class="field"><label>Year of birth</label><input id="d-yob" type="number" min="1920" max="2012" value="${d.yob || ""}"></div>
     <div class="field"><label>Highest education</label><select id="d-edu"><option value=""></option>${EDU_OPTIONS.map(e =>
       `<option ${d.edu === e ? "selected" : ""}>${e}</option>`).join("")}</select></div>
@@ -556,8 +558,8 @@ function renderAbout() {
     state.demo[key] = this.value; persist();
   });
   bind("d-name", "name"); bind("d-org", "org"); bind("d-team", "team");
-  bind("d-race-self", "raceSelf"); bind("d-yob", "yob");
-  document.getElementById("d-gender").addEventListener("change", function () { state.demo.gender = this.value; persist(); });
+  bind("d-race-self", "raceSelf"); bind("d-gender-self", "genderSelf"); bind("d-yob", "yob");
+  document.getElementById("d-gender").addEventListener("change", function () { state.demo.gender = this.value; persist(); renderAbout(); });
   document.getElementById("d-edu").addEventListener("change", function () { state.demo.edu = this.value; persist(); });
   document.getElementById("d-race").querySelectorAll("input").forEach(box => box.addEventListener("change", function () {
     state.demo.race = Array.from(document.querySelectorAll("#d-race input:checked")).map(x => x.value);
