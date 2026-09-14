@@ -177,8 +177,10 @@ const CONFIG = {
   if (p.get("results") === "profile") CONFIG.results = "profile";
 })();
 
-const SUPABASE_URL = "https://jddrxzirkkmpsqqrmsea.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkZHJ4emlya2ttcHNxcXJtc2VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMTY0MjQsImV4cCI6MjA4ODU5MjQyNH0.RBk3fRlL6thd7AT3YBdmxEXpmtb_KoY9hHAOPUWREME";
+const SUPABASE_URL = "https://xdujvtvjpwbvoonxjjqa.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_KYNMrQWM7OQQ72HLv7WiFQ_eB1R_uT_";
+/* Publishable keys are not JWTs; only JWT-style keys take an Authorization header. */
+const KEY_IS_JWT = SUPABASE_ANON_KEY.startsWith("eyJ");
 /* Shares the CPA project's cpa_responses table; rows distinguished by kind:"battery". */
 async function saveToBackend(payload) {
   let lastErr = null;
@@ -189,7 +191,8 @@ async function saveToBackend(payload) {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/cpa_responses`, {
         method:"POST",
         headers:{ "Content-Type":"application/json", "apikey":SUPABASE_ANON_KEY,
-          "Authorization":`Bearer ${SUPABASE_ANON_KEY}`, "Prefer":"return=minimal" },
+          ...(KEY_IS_JWT ? { "Authorization":`Bearer ${SUPABASE_ANON_KEY}` } : {}),
+          "Prefer":"return=minimal" },
         body: JSON.stringify({ kind: payload.kind, version: payload.version || null,
           respondent: payload.respondent || null, payload }),
         signal: ctrl.signal,
